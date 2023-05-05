@@ -1,10 +1,20 @@
-import React, { useState } from "react";
+import { cleanup } from "@testing-library/react";
+import React, { useState, useEffect } from "react";
 
 function Question({ question, onAnswered }) {
   const [timeRemaining, setTimeRemaining] = useState(10);
 
   // add useEffect code
+  useEffect(() => {
+    const intervalId = setInterval(() => setTimeRemaining(currentTime => currentTime - 1), 1000)
+        
+    return () => clearTimeout(intervalId)
+  }, [])
 
+  if(timeRemaining < 0) {
+    onAnswered(false)
+    setTimeRemaining(10)
+  }
   function handleAnswer(isCorrect) {
     setTimeRemaining(10);
     onAnswered(isCorrect);
